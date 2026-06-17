@@ -1,4 +1,3 @@
-
 import streamlit as st
 import ee
 import folium
@@ -16,7 +15,7 @@ translations = {
         "soil_title": "🟫 Nooca Ciidda (FAO)",
         "soil_info": "Xogta FAO: Ciidda Gode waa ciid carlo-ciid ah oo u baahan waraab sax ah.",
         "rec_title": "💡 Talo Soo Jeedin Muhiim ah oo ku saabsan beerashada:",
-        "rec_text": "DIGNIIN: Ha beeran bisha Luulyo ama Sebtembar sababtoo ah roob ma jiro. Adeegso biyaha waraabka Wabiga Shabelle si dalaggu u badbaado!",
+        "rec_text": "DIGNIIN: Ha beeran bisha Luulyo ama Sebtembar sababtoo her roob ma jiro. Adeegso biyaha waraabka Wabiga Shabelle si dalaggu u badbaado!",
         "rain_legend": "Casaan = Roob La'aan | Cagaar = Roob Leh | Jaalle = Roob Yar",
         "chart_title": "Heerka Roobka ee Gode Zone (Histogram)"
     },
@@ -95,7 +94,6 @@ with col1:
     fig, ax = plt.subplots(figsize=(6, 3))
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     
-    # WE FIXED THIS LINE! Real rainfall numbers for Gode are now added inside the brackets:
     rainfall_levels = [10, 15, 40, 95, 50, 5, 0, 5, 0, 65, 80, 20]
     
     colors = ['#e74c3c' if r < 15 else '#f1c40f' if r < 45 else '#2ecc71' for r in rainfall_levels]
