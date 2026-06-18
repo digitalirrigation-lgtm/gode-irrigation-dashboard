@@ -1,6 +1,0 @@
-
-earthengine-api==1.7.31
-streamlit==1.35.0
-folium==0.17.0
-streamlit-folium==0.18.0
-matplotlib==3.8.4
