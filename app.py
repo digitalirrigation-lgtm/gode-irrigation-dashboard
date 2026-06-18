@@ -60,32 +60,26 @@ text = translations[selected_lang]
 st.title(text["title"])
 st.write(f"### {text['subtitle']}")
 
-if "gcp_secrets" in st.secrets:
-    try:
-        secret_dict = dict(st.secrets["gcp_secrets"])
-        credentials = ee.ServiceAccountCredentials(email=None, key_data=str(secret_dict))
-        ee.Initialize(credentials, project="irrigation-intelligence-pro")
-        
-        gode_lat, gode_lon = 5.95, 43.55
-        gode_map = folium.Map(location=[gode_lat, gode_lon], zoom_start=11)
-        
-        copernicus_images = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED') \
-            .filterBounds(ee.Geometry.Point(gode_lon, gode_lat)).first()
-        ndvi = copernicus_images.normalizedDifference(['B8', 'B4'])
-        crop_health_layer = ee.Image(ndvi).getMapId({'min': 0, 'max': 0.8, 'palette': ['#e74c3c', '#f1c40f', '#2ecc71']})
-        
-        folium.raster_layers.TileLayer(
-            tiles=crop_health_layer['tile_fetcher'].url_format,
-            attr='Copernicus',
-            name="Live Imagery",
-            overlay=True
-        ).add_to(gode_map)
-        
-        st_folium(gode_map, width=1100, height=500)
-    except Exception as e:
-        st.warning("Map streaming layer initializing...")
-else:
-    st.info("ℹ️ Map engine active. Secure handshake initialized via cloud variables.")
+# INSTANT LOADING MAP CONFIGURATION
+gode_lat, gode_lon = 5.95, 43.55
+
+# We use the 'Esri Satellite' map stream which loads instantly without server lag!
+gode_map = folium.Map(
+    location=[gode_lat, gode_lon], 
+    zoom_start=12,
+    tiles='https://arcgisonline.com{z}/{y}/{x}',
+    attr='Esri Satellite Imagery'
+)
+
+# Add a marker over the Shabelle River irrigation zone
+folium.Marker(
+    [gode_lat, gode_lon], 
+    popup="Gode Agriculture Center", 
+    icon=folium.Icon(color="green", icon="leaf")
+).add_to(gode_map)
+
+# Render map instantly
+st_folium(gode_map, width=1100, height=500, key="gode_map_instance")
 
 col1, col2 = st.columns(2)
 with col1:
